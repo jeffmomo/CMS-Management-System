@@ -14,7 +14,7 @@ public class IntegrationTester {
     public static void main(String[] args) throws Exception
     {
         Manager manager = new Manager();
-        WebSocketImpl.DEBUG = true;
+        //WebSocketImpl.DEBUG = true;
 
         APIServer s;
         try

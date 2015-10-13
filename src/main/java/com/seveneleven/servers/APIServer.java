@@ -9,18 +9,19 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.function.Consumer;
 
+
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import org.json.JSONObject;
 
 /**
  * A simple WebSocketServer implementation. Keeps track of a "chatroom".
  */
 public class APIServer extends WebSocketServer implements IAPIServer {
 
-    private final Hashtable<String[], WebSocket> _connections = new Hashtable<>();
+    private final Hashtable<SocketTag, WebSocket> _connections = new Hashtable<>();
     private final Hashtable<String, Consumer<String>> _registry = new Hashtable<>();
-
 
     public APIServer(int port) throws UnknownHostException {
         super(new InetSocketAddress(port));
@@ -32,6 +33,7 @@ public class APIServer extends WebSocketServer implements IAPIServer {
 
     public void registerAction(String key, Consumer<String> func)
     {
+        System.out.println("Registering action: " + key);
         if(!_registry.containsKey(key))
             _registry.put(key, func);
     }
@@ -42,7 +44,7 @@ public class APIServer extends WebSocketServer implements IAPIServer {
         {
             _connections.forEach((k, sock) ->
             {
-                if (apiType.equals(k[0]))
+                if (apiType.equals(k.tag))
                     sock.send(message);
             });
         }
@@ -54,7 +56,7 @@ public class APIServer extends WebSocketServer implements IAPIServer {
         {
             _connections.forEach((k, sock) ->
             {
-                if (target.equals(k[1]))
+                if (target.equals(k.identifier))
                     sock.send(message);
             });
         }
@@ -73,30 +75,34 @@ public class APIServer extends WebSocketServer implements IAPIServer {
     @Override
     public void onMessage( WebSocket conn, String message )
     {
-        String[] split = message.split(",");
+        JSONObject obj = new JSONObject(message);
+        String tag = obj.isNull("tag") ? null : obj.getString("tag"), id = obj.isNull("identifier") ? null : obj.getString("identifier"),
+                priv = obj.isNull("privileges") ? null : obj.getString("privileges"), data = obj.isNull("data") ? null : obj.getString("data");
 
-        if(split.length > 2)
+        // If it is a initial message by a recv socket
+        if(id != null)
         {
+            System.out.println("ReceiveSocket initialising");
+            assert tag != null && id != null;
             // Tagging the connection with content of initial message
             // TODO: Json
             // Left: APIType, Right: Identifier
             // Only put if a 3-tuple is given - i.e. 3-tuple implies that it is a receiving socket.
             if(!_connections.contains(conn))
-                _connections.put(split, conn);
+                _connections.put(new SocketTag(tag, id, priv) , conn);
         }
         else
         {
-            // Every subsequent message should contain a tag
-            // TODO: Convert to JSON
-            String tag = split[0];
-            String content = split[1];
+            assert tag != null & data != null;
+            // Every sent message should contain a tag
 
+            System.out.println("Data Send: " + tag + ", " + data);
             synchronized (_registry)
             {
                 _registry.forEach((str, func) ->
                 {
                     if (tag.equals(str)) {
-                        func.accept(content);
+                        func.accept(data);
                     }
                 });
             }
