@@ -1,6 +1,7 @@
 package com.seveneleven;
 
 import com.seveneleven.publishers.Publisher;
+import com.seveneleven.publishers.TimedPublisher;
 import com.seveneleven.servers.APIServer;
 import com.seveneleven.subscribers.WriteOutSubscriber;
 import com.seveneleven.subscribers.EchoSubscriber;
@@ -19,7 +20,8 @@ public class IntegrationTester {
         APIServer s;
         try
         {
-            s = new APIServer(8887);
+            APIServer.initInstance(8887);
+            s = APIServer.getInstance();
         }
         catch(Exception e)
         {
@@ -31,6 +33,7 @@ public class IntegrationTester {
         manager.subscribe(new EchoSubscriber(s));
 
         Publisher con = new APIComponent(s, manager);
+        TimedPublisher tp = new TimedPublisher(manager, 500);
 
         s.start();
         System.out.println( "ChatServer started on port: " + s.getPort() );

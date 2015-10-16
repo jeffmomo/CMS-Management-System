@@ -7,9 +7,24 @@ import java.util.function.Consumer;
  */
 public interface IAPIServer {
 
+    /**
+     * Defines a response when API message received
+     * @param key The key of the API message
+     * @param func The function to execute
+     */
     public void registerAction(String key, Consumer<String> func);
 
-    public void broadcast(String apiType, String message);
+    /**
+     * Broadcasts a message to all connected clients
+     * @param tag The tag of the message (it can only be received by sockets listening to the same tag)
+     * @param message The message
+     */
+    public void broadcast(String tag, String message);
 
-    public void sendTargeted(String target, String message);
+    /**
+     * Sends a specific target a message
+     * @param identifier The identifier of the target
+     * @param message The message
+     */
+    public void sendTargeted(String identifier, String message);
 }

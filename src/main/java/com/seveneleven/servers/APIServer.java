@@ -22,14 +22,46 @@ public class APIServer extends WebSocketServer implements IAPIServer {
 
     private final Hashtable<SocketTag, WebSocket> _connections = new Hashtable<>();
     private final Hashtable<String, Consumer<String>> _registry = new Hashtable<>();
+    private static APIServer _instance;
 
-    public APIServer(int port) throws UnknownHostException {
+    private APIServer(int port) throws UnknownHostException {
         super(new InetSocketAddress(port));
     }
-
-    public APIServer(InetSocketAddress address) {
+    private APIServer(InetSocketAddress address) {
         super(address);
     }
+
+
+    /**
+     * Gets the singleton instance of the APIServer
+     * @return
+     * @throws Exception
+     */
+    public static APIServer getInstance() throws Exception
+    {
+        if(_instance != null)
+            return _instance;
+        else
+        {
+            throw new Exception("API Server not yet initialised. Call initInstance first");
+        }
+    }
+
+    /**
+     * Manual initialisation of the APIServer
+     * @param port
+     * @throws UnknownHostException
+     */
+    public static void initInstance(int port) throws UnknownHostException
+    {
+        _instance = new APIServer(port);
+    }
+    public static void initInstance(InetSocketAddress address)
+    {
+        _instance = new APIServer(address);
+    }
+
+
 
     public void registerAction(String key, Consumer<String> func)
     {
@@ -38,25 +70,26 @@ public class APIServer extends WebSocketServer implements IAPIServer {
             _registry.put(key, func);
     }
 
-    public void broadcast(String apiType, String message)
+    public synchronized void broadcast(String tag, String message)
     {
+        System.out.println("Broadcasting: " + message + " _TO_ " + tag);
         synchronized (_connections)
         {
             _connections.forEach((k, sock) ->
             {
-                if (apiType.equals(k.tag))
+                if (tag.equals(k.tag))
                     sock.send(message);
             });
         }
     }
 
-    public void sendTargeted(String target, String message)
+    public void sendTargeted(String identifier, String message)
     {
         synchronized (_connections)
         {
             _connections.forEach((k, sock) ->
             {
-                if (target.equals(k.identifier))
+                if (identifier.equals(k.identifier))
                     sock.send(message);
             });
         }
@@ -68,8 +101,13 @@ public class APIServer extends WebSocketServer implements IAPIServer {
     }
 
     @Override
-    public void onClose( WebSocket conn, int code, String reason, boolean remote ) {
-
+    public void onClose( WebSocket conn, int code, String reason, boolean remote )
+    {
+        System.out.println("Socket disconnecting");
+        synchronized (_connections)
+        {
+            _connections.values().remove(conn);
+        }
     }
 
     @Override
@@ -88,8 +126,11 @@ public class APIServer extends WebSocketServer implements IAPIServer {
             // TODO: Json
             // Left: APIType, Right: Identifier
             // Only put if a 3-tuple is given - i.e. 3-tuple implies that it is a receiving socket.
-            if(!_connections.contains(conn))
-                _connections.put(new SocketTag(tag, id, priv) , conn);
+            synchronized (_connections)
+            {
+                if(!_connections.contains(conn))
+                    _connections.put(new SocketTag(tag, id, priv) , conn);
+            }
         }
         else
         {

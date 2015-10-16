@@ -11,13 +11,21 @@ import java.util.List;
  */
 public class Manager
 {
+    // Used for know which subscriber to invoke
     HashMap<String, List<ISubscriber>> map;
 
+    /**
+     * Creates a new manager instance
+     */
     public Manager()
     {
         map = new HashMap<>();
     }
 
+    /**
+     * Subscribers the given subscriber to all relevant invocations from publishers
+     * @param subscriber The subscriber
+     */
     public void subscribe(ISubscriber subscriber)
     {
         if(!map.containsKey(subscriber.getSubscription()))
@@ -35,6 +43,11 @@ public class Manager
             //map.replace(subscription, temp);
         }
     }
+
+    /**
+     * Unsubscribes the given subscriber
+     * @param subscriber The subscriber
+     */
     public void unsubscribe(ISubscriber subscriber)
     {
         if(map.containsKey(subscriber.getSubscription()))
@@ -47,6 +60,11 @@ public class Manager
         }
     }
 
+    /**
+     * Calls all subscribers with the given subscription string
+     * @param subscription The subscription string
+     * @param data The data to pass to subscribers
+     */
     public void callSubscribers(String subscription, Object data)
     {
         System.out.println("Calling: " + subscription);
