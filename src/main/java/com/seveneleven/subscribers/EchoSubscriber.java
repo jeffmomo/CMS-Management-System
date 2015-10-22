@@ -8,14 +8,6 @@ import com.seveneleven.publishers.Publisher;
  */
 public class EchoSubscriber implements ISubscriber
 {
-    private APIServer _server;
-
-    public EchoSubscriber(APIServer server)
-    {
-        _server = server;
-    }
-
-
     @Override
     public String getSubscription() {
         return Publisher.TEST_ECHO;
@@ -24,6 +16,13 @@ public class EchoSubscriber implements ISubscriber
     @Override
     public void onData(Object data) {
         System.err.println("Echoing...");
-        _server.broadcast("echo", data.toString());
+        try
+        {
+            APIServer.getInstance().broadcast("echo", data.toString());
+        }
+        catch (Exception e)
+        {
+
+        }
     }
 }

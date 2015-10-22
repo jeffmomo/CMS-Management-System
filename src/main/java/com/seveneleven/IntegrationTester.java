@@ -3,8 +3,7 @@ package com.seveneleven;
 import com.seveneleven.publishers.Publisher;
 import com.seveneleven.publishers.TimedPublisher;
 import com.seveneleven.servers.APIServer;
-import com.seveneleven.subscribers.WriteOutSubscriber;
-import com.seveneleven.subscribers.EchoSubscriber;
+import com.seveneleven.subscribers.*;
 import org.java_websocket.WebSocketImpl;
 
 /**
@@ -30,7 +29,10 @@ public class IntegrationTester {
         }
 
         manager.subscribe(new WriteOutSubscriber());
-        manager.subscribe(new EchoSubscriber(s));
+        manager.subscribe(new EchoSubscriber());
+        //manager.subscribe(new ServerTestSubscriber());
+        manager.subscribe(new HazardUpdateSubscriber());
+        manager.subscribe(new IncidentUpdateSubscriber());
 
         Publisher con = new APIComponent(s, manager);
         TimedPublisher tp = new TimedPublisher(manager, 500);

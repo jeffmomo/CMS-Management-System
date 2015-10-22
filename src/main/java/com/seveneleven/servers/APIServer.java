@@ -83,7 +83,7 @@ public class APIServer extends WebSocketServer implements IAPIServer {
         }
     }
 
-    public void sendTargeted(String identifier, String message)
+    public void sendTargeted(final String identifier, String message)
     {
         synchronized (_connections)
         {
@@ -114,7 +114,7 @@ public class APIServer extends WebSocketServer implements IAPIServer {
     public void onMessage( WebSocket conn, String message )
     {
         JSONObject obj = new JSONObject(message);
-        String tag = obj.isNull("tag") ? null : obj.getString("tag"), id = obj.isNull("identifier") ? null : obj.getString("identifier"),
+        final String tag = obj.isNull("tag") ? null : obj.getString("tag"), id = obj.isNull("identifier") ? null : obj.getString("identifier"),
                 priv = obj.isNull("privileges") ? null : obj.getString("privileges"), data = obj.isNull("data") ? null : obj.getString("data");
 
         // If it is a initial message by a recv socket
@@ -122,19 +122,15 @@ public class APIServer extends WebSocketServer implements IAPIServer {
         {
             System.out.println("ReceiveSocket initialising");
             assert tag != null && id != null;
-            // Tagging the connection with content of initial message
-            // TODO: Json
-            // Left: APIType, Right: Identifier
-            // Only put if a 3-tuple is given - i.e. 3-tuple implies that it is a receiving socket.
             synchronized (_connections)
             {
                 if(!_connections.contains(conn))
-                    _connections.put(new SocketTag(tag, id, priv) , conn);
+                    _connections.put(new SocketTag(tag, priv, id) , conn);
             }
         }
         else
         {
-            assert tag != null & data != null;
+            assert(tag != null & data != null);
             // Every sent message should contain a tag
 
             System.out.println("Data Send: " + tag + ", " + data);

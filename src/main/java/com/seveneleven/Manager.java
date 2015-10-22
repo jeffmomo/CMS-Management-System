@@ -28,19 +28,22 @@ public class Manager
      */
     public void subscribe(ISubscriber subscriber)
     {
-        if(!map.containsKey(subscriber.getSubscription()))
+        synchronized (map)
         {
-            List temp = new ArrayList<ISubscriber>();
-            temp.add(subscriber);
+            if(!map.containsKey(subscriber.getSubscription()))
+            {
+                List temp = new ArrayList<ISubscriber>();
+                temp.add(subscriber);
 
-            map.put(subscriber.getSubscription(), temp);
-        }
-        else
-        {
-            List temp = map.get(subscriber.getSubscription());
-            temp.add(subscriber);
+                map.put(subscriber.getSubscription(), temp);
+            }
+            else
+            {
+                List temp = map.get(subscriber.getSubscription());
+                temp.add(subscriber);
 
-            //map.replace(subscription, temp);
+                //map.replace(subscription, temp);
+            }
         }
     }
 
@@ -50,13 +53,16 @@ public class Manager
      */
     public void unsubscribe(ISubscriber subscriber)
     {
-        if(map.containsKey(subscriber.getSubscription()))
+        synchronized (map)
         {
-            List l = map.get(subscriber.getSubscription());
-            l.remove(subscriber);
+            if(map.containsKey(subscriber.getSubscription()))
+            {
+                List l = map.get(subscriber.getSubscription());
+                l.remove(subscriber);
 
-            if(l.isEmpty())
-                map.remove(subscriber.getSubscription());
+                if(l.isEmpty())
+                    map.remove(subscriber.getSubscription());
+            }
         }
     }
 
@@ -67,14 +73,31 @@ public class Manager
      */
     public void callSubscribers(String subscription, Object data)
     {
-        System.out.println("Calling: " + subscription);
-
-        if(map.containsKey(subscription))
+        //System.out.println("Calling: " + subscription);
+        synchronized (map)
         {
-            for(ISubscriber s : map.get(subscription))
+            if(map.containsKey(subscription))
             {
-                s.onData(data);
+                for(ISubscriber s : map.get(subscription))
+                {
+                    s.onData(data);
+                }
             }
         }
+    }
+
+    public String getAllIncidents()
+    {
+        return "Getting incidents: Not implemented yet";
+    }
+
+    public String getAllHazards()
+    {
+        return "Getting hazards: Not yet implemented";
+    }
+
+    public String hitTest()
+    {
+        return "this is the hit test message. Will be replaced by actual data later";
     }
 }
