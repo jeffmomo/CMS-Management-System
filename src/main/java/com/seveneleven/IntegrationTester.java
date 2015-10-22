@@ -33,14 +33,14 @@ public class IntegrationTester {
         //manager.subscribe(new ServerTestSubscriber());
         manager.subscribe(new HazardUpdateSubscriber());
         manager.subscribe(new IncidentUpdateSubscriber());
+        manager.subscribe(new SocialMediaSubscriber());
 
         Publisher con = new APIComponent(s, manager);
-        TimedPublisher tp = new TimedPublisher(manager, 500);
+//        TimedPublisher tp = new TimedPublisher(manager, 500);
 
         s.start();
-        System.out.println( "ChatServer started on port: " + s.getPort() );
+        System.out.println("ChatServer started on port: " + s.getPort());
 
-
-
+        manager.callSubscribers(SocialMediaSubscriber.SOCIAL_MEDIA_SUBSCRIBER, "Hello");
     }
 }
