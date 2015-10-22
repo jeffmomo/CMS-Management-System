@@ -85,6 +85,7 @@ public class APIServer extends WebSocketServer implements IAPIServer {
 
     public void sendTargeted(final String identifier, String message)
     {
+        System.out.println("Sending targeted message: " + message);
         synchronized (_connections)
         {
             _connections.forEach((k, sock) ->
