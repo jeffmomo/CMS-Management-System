@@ -17,14 +17,14 @@ public interface IAPIServer {
     /**
      * Broadcasts a message to all connected clients
      * @param tag The tag of the message (it can only be received by sockets listening to the same tag)
-     * @param message The message
+     * @param message The message, which should be a JSON object in string format
      */
     public void broadcast(String tag, String message);
 
     /**
      * Sends a specific target a message
      * @param identifier The identifier of the target
-     * @param message The message
+     * @param message The message which should be a JSON object in string format
      */
     public void sendTargeted(String identifier, String message);
 }

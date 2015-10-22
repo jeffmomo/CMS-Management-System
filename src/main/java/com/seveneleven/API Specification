@@ -1,0 +1,14 @@
+
+## From client to server ##
+srv_add_hazard -> {description: String, location: String, datetime: String, status: String}
+srv_add_incident -> {description: String, location: String, datetime: String, status: String}
+srv_getall_incidents -> socketId: String
+srv_getall_hazards -> socketId: String
+
+## From server to client ##
+client_create_zone -> {description: String, location: String, datetime: String, status: String}
+client_create_marker -> {description: String, location: String, datetime: String, status: String}
+
+## From server to directly targeted client ##
+{apiType: "client_all_incidents", allIncidents: String[][]}
+{apiType: "client_all_hazards", allHazards: String[][]}

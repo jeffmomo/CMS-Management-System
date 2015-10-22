@@ -10,7 +10,7 @@ public class HazardUpdateSubscriber implements ISubscriber
 {
     @Override
     public String getSubscription() {
-        return "srv_add_hazard";
+        return Publisher.ADDED_NEW_HAZARD;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.seveneleven.subscribers;
 
+import com.seveneleven.publishers.Publisher;
 import com.seveneleven.servers.APIServer;
 
 /**
@@ -9,7 +10,7 @@ public class IncidentUpdateSubscriber implements ISubscriber
 {
     @Override
     public String getSubscription() {
-        return "srv_add_incident";
+        return Publisher.ADDED_NEW_INCIDENT;
     }
 
     @Override

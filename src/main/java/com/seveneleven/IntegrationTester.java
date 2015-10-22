@@ -14,11 +14,11 @@ public class IntegrationTester {
     public static void main(String[] args) throws Exception
     {
         Manager manager = new Manager();
-        //WebSocketImpl.DEBUG = true;
 
         APIServer s;
         try
         {
+            // Initialises the instance of the APIServer
             APIServer.initInstance(8887);
             s = APIServer.getInstance();
         }
@@ -28,15 +28,14 @@ public class IntegrationTester {
             return;
         }
 
-        manager.subscribe(new WriteOutSubscriber());
-        manager.subscribe(new EchoSubscriber());
-        //manager.subscribe(new ServerTestSubscriber());
+
+        // Add the subscribers
         manager.subscribe(new HazardUpdateSubscriber());
         manager.subscribe(new IncidentUpdateSubscriber());
         manager.subscribe(new SocialMediaSubscriber());
 
         Publisher con = new APIComponent(s, manager);
-//        TimedPublisher tp = new TimedPublisher(manager, 500);
+//      TimedPublisher tp = new TimedPublisher(manager, 500);
 
         s.start();
         System.out.println("ChatServer started on port: " + s.getPort());

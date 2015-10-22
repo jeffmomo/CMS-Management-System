@@ -8,10 +8,10 @@ import com.seveneleven.Manager;
 public class Publisher
 {
     // Constants for the strings indicating publications
-    public static final String INCIDENT_INFO = "iinfo";
-    public static final String HAZARD_INFO = "hinfo";
+    public static final String ADDED_NEW_INCIDENT = "add_incident";
+    public static final String ADDED_NEW_HAZARD = "add_hazard";
     public static final String TEST_ECHO = "echo";
-    public static final String TEST_WRITEOUT = "dank";
+    public static final String DEFAULT = "default";
 
     // Declares the associated manager and publication
     private Manager _manager;
@@ -26,6 +26,16 @@ public class Publisher
     {
         _manager = manager;
         _publication = publication;
+    }
+
+    /**
+     * Constructs a publisher attached to the given manager, without giving a default publication string.
+     * This means that each call of "publish" will require you to provide a publication string.
+     * @param manager The manager to attach to
+     */
+    public Publisher(Manager manager)
+    {
+        _manager = manager;
     }
 
     /**

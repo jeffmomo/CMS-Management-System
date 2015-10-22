@@ -16,35 +16,36 @@ public class APIComponent extends Publisher
 {
     public APIComponent(APIServer server, Manager manager)
     {
-        // Publishes on the TEST_WRITEOUT publication string
-        super(manager, Publisher.TEST_WRITEOUT);
+        // Publishes on the default publication string
+        super(manager, Publisher.DEFAULT);
 
+        // Respond to when web client requests getting all incident/hazards
+        server.registerAction("srv_getall_incidents", (socketId) ->
+        {
+            JSONObject data = new JSONObject();
+            data.put("apiType", "client_all_incidents");
+            data.put("allIncidents", manager.getAllIncidents());
 
-        // Registers the actions with the APIServer
-        // This means that whenever message with the tags 'dank' or 'echo' is received from the server side,
-        // The following functions will then be called on the message received
-        server.registerAction("dank", (str) -> this.publish(str));
-        server.registerAction("echo", (str) -> this.publish(Publisher.TEST_ECHO, str));
-
-        server.registerAction("hit_test", (socketId) -> {
-            server.sendTargeted(socketId, manager.hitTest());
-            System.err.println("TEST HIT!");
+            server.sendTargeted(socketId, data.toString());
         });
 
-        server.registerAction("getall_incidents", (socketId) -> server.sendTargeted(socketId, manager.getAllIncidents()));
-        server.registerAction("getall_hazards", (socketId) -> server.sendTargeted(socketId, manager.getAllHazards()));
+        server.registerAction("srv_getall_hazards", (socketId) ->
+        {
+            JSONObject data = new JSONObject();
+            data.put("apiType", "client_all_hazards");
+            data.put("allIncidents", manager.getAllHazards());
 
+            server.sendTargeted(socketId, data.toString());
+        });
+
+        // Registers the action to publish new hazard, when messages with the tag "srv_add_hazard" is received
         server.registerAction("srv_add_hazard", (msg) ->
         {
-            //JSONObject dataObj = new JSONObject(msg);
-            publish(new HazardUpdateSubscriber().getSubscription(), msg);
-
+            publish(Publisher.ADDED_NEW_HAZARD, msg);
         });
         server.registerAction("srv_add_incident", (msg) ->
         {
-            //JSONObject dataObj = new JSONObject(msg);
-            publish(new IncidentUpdateSubscriber().getSubscription(), msg);
-
+            publish(Publisher.ADDED_NEW_INCIDENT, msg);
         });
     }
 }
