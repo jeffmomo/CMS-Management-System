@@ -3,6 +3,7 @@ package com.seveneleven;
 import com.seveneleven.publishers.Publisher;
 import com.seveneleven.publishers.TimedPublisher;
 import com.seveneleven.servers.APIServer;
+import com.seveneleven.subscribers.SocialMediaSubscriber;
 import com.seveneleven.subscribers.WriteOutSubscriber;
 import com.seveneleven.subscribers.EchoSubscriber;
 import org.java_websocket.WebSocketImpl;
@@ -31,14 +32,14 @@ public class IntegrationTester {
 
         manager.subscribe(new WriteOutSubscriber());
         manager.subscribe(new EchoSubscriber(s));
+        manager.subscribe(new SocialMediaSubscriber());
 
         Publisher con = new APIComponent(s, manager);
-        TimedPublisher tp = new TimedPublisher(manager, 500);
+//        TimedPublisher tp = new TimedPublisher(manager, 500);
 
         s.start();
-        System.out.println( "ChatServer started on port: " + s.getPort() );
+        System.out.println("ChatServer started on port: " + s.getPort());
 
-
-
+        manager.callSubscribers(SocialMediaSubscriber.SOCIAL_MEDIA_SUBSCRIBER, "Hello");
     }
 }

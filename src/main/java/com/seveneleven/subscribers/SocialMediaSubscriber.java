@@ -15,8 +15,17 @@ public class SocialMediaSubscriber implements ISubscriber {
     return SOCIAL_MEDIA_SUBSCRIBER;
   }
 
+  /**
+   * @param data The string data. This data will be posted to all social media.
+   */
   @Override
   public void onData(Object data) {
-    // TODO: what data will I receive?
+    if (data == null || !(data instanceof String)) {
+      return;
+    }
+
+    String message = (String) data;
+    System.out.println("Posting message to Facebook: " + message);
+    System.out.println("Posting message to Twitter: " + message);
   }
 }
