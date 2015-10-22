@@ -1,8 +1,5 @@
 package com.seveneleven.subscribers;
 
-/**
- * Created by andyccs on 21/10/15.
- */
 public class SocialMediaSubscriber implements ISubscriber {
 
   public static final String SOCIAL_MEDIA_SUBSCRIBER = "social_media_subscriber";
