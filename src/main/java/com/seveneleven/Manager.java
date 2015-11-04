@@ -12,7 +12,7 @@ import java.util.List;
 public class Manager
 {
     // Used for know which subscriber to invoke
-    HashMap<String, List<ISubscriber>> map;
+    private HashMap<String, List<ISubscriber>> map;
 
     /**
      * Creates a new manager instance
