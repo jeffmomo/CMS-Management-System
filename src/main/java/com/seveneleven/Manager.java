@@ -1,8 +1,11 @@
 package com.seveneleven;
 
 import com.seveneleven.subscribers.ISubscriber;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -86,14 +89,37 @@ public class Manager
         }
     }
 
+    public void putIncident(String description, String location, String status)
+    {
+        DBAdaptor.addIncident(description, location, status);
+    }
+    public void putHazard(String description, String location, String status)
+    {
+        DBAdaptor.addHazard(description, location, status);
+    }
+
     public String getAllIncidents()
     {
-        return "Getting incidents: Not implemented yet";
+        // Gets all incidents
+        ArrayList c = DBAdaptor.getIncidents();
+        JSONArray ja = new JSONArray();
+        ja.put(c);
+
+        // Returns the JSON representation of data
+        return ja.toString();
+
+//        return "Getting incidents: Not implemented yet";
     }
 
     public String getAllHazards()
     {
-        return "Getting hazards: Not yet implemented";
+        // Gets all incidents
+        ArrayList ar = DBAdaptor.getHazards();
+        JSONArray ja = new JSONArray();
+        ja.put(ar);
+
+        // Returns the JSON representation of data
+        return ja.toString();
     }
 
     public String hitTest()
