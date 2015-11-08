@@ -48,7 +48,10 @@ public class IntegrationTester {
         s.start();
         System.out.println("ChatServer started on port: " + s.getPort());
 
-        manager.callSubscribers(SocialMediaSubscriber.SOCIAL_MEDIA_SUBSCRIBER, "Hello");
+        // Uncomment this if you want to post to twitter
+        // Login: +6593510320
+        // Password: liur0008
+//        manager.callSubscribers(SocialMediaSubscriber.SOCIAL_MEDIA_SUBSCRIBER, "Hello");
 
 
 

@@ -1,8 +1,15 @@
 package com.seveneleven.subscribers;
 
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+
 public class SocialMediaSubscriber implements ISubscriber {
 
   public static final String SOCIAL_MEDIA_SUBSCRIBER = "social_media_subscriber";
+
+  private String latestStatus;
 
   public SocialMediaSubscriber() {
   }
@@ -22,7 +29,19 @@ public class SocialMediaSubscriber implements ISubscriber {
     }
 
     String message = (String) data;
-    System.out.println("Posting message to Facebook: " + message);
-    System.out.println("Posting message to Twitter: " + message);
+
+    // The factory instance is re-useable and thread safe.
+    Twitter twitter = TwitterFactory.getSingleton();
+    try {
+      Status status = twitter.updateStatus(message);
+      System.out.println("Successfully updated the status to [" + status.getText() + "].");
+      latestStatus = status.getText();
+    } catch (TwitterException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public String getLatestStatus() {
+    return latestStatus;
   }
 }
