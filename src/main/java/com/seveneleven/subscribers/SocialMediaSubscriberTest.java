@@ -2,9 +2,7 @@ package com.seveneleven.subscribers;
 
 import junit.framework.TestCase;
 
-/**
- * Created by andyccs on 8/11/15.
- */
+
 public class SocialMediaSubscriberTest extends TestCase {
   public void testGetSubscription() {
     SocialMediaSubscriber subscriber = new SocialMediaSubscriber();

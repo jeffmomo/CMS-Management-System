@@ -20,7 +20,8 @@ public class SocialMediaSubscriber implements ISubscriber {
   }
 
   /**
-   * @param data The string data. This data will be posted to all social media.
+   * Post the message to Twitter
+   * @param data The string data. This data will be posted to Twitter
    */
   @Override
   public void onData(Object data) {
@@ -41,6 +42,10 @@ public class SocialMediaSubscriber implements ISubscriber {
     }
   }
 
+  /**
+   * Get latest tweet.
+   * @return the latest tweet. It returns null if you never tweet. `
+   */
   public String getLatestStatus() {
     return latestStatus;
   }
