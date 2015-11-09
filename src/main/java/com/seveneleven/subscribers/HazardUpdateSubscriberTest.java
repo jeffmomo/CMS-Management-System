@@ -1,7 +1,6 @@
 package com.seveneleven.subscribers;
 
 import com.seveneleven.publishers.Publisher;
-import com.seveneleven.servers.APIServer;
 import com.seveneleven.servers.IAPIServer;
 import junit.framework.TestCase;
 
@@ -41,12 +40,12 @@ public class HazardUpdateSubscriberTest extends TestCase {
     }
 
     public void testGetSubscription() throws Exception {
-        HazardUpdateSubscriber underTest = new HazardUpdateSubscriber(dummyServer);
+        HazardUpdateComponent underTest = new HazardUpdateComponent(dummyServer);
         assertEquals(underTest.getSubscription(), Publisher.ADDED_NEW_HAZARD);
     }
 
     public void testOnData() throws Exception {
-        HazardUpdateSubscriber underTest = new HazardUpdateSubscriber(dummyServer);
+        HazardUpdateComponent underTest = new HazardUpdateComponent(dummyServer);
         underTest.onData("abc");
 
         assertEquals(dummyServer.tagString, Publisher.ADDED_NEW_HAZARD);

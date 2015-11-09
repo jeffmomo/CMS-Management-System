@@ -1,13 +1,12 @@
 package com.seveneleven.subscribers;
 
+import com.seveneleven.publishers.Publisher;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
 public class SocialMediaSubscriber implements ISubscriber {
-
-  public static final String SOCIAL_MEDIA_SUBSCRIBER = "social_media_subscriber";
 
   private String latestStatus;
 
@@ -16,7 +15,7 @@ public class SocialMediaSubscriber implements ISubscriber {
 
   @Override
   public String getSubscription() {
-    return SOCIAL_MEDIA_SUBSCRIBER;
+    return Publisher.ADDED_NEW_HAZARD;
   }
 
   /**

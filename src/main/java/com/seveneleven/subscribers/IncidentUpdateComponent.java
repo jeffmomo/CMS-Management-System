@@ -12,11 +12,11 @@ import org.json.JSONObject;
 /**
  * Created by mdl94 on 22/10/2015.
  */
-public class IncidentUpdateSubscriber implements ISubscriber
+public class IncidentUpdateComponent implements ISubscriber
 {
     private IAPIServer server;
 
-    public IncidentUpdateSubscriber(IAPIServer server)
+    public IncidentUpdateComponent(IAPIServer server)
     {
         this.server = server;
     }

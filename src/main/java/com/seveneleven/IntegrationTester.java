@@ -1,7 +1,6 @@
 package com.seveneleven;
 
 import com.seveneleven.publishers.Publisher;
-import com.seveneleven.publishers.TimedPublisher;
 import com.seveneleven.servers.APIServer;
 import com.seveneleven.subscribers.*;
 import org.eclipse.jetty.server.Handler;
@@ -10,16 +9,15 @@ import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.handler.gzip.GzipHandler;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.java_websocket.WebSocketImpl;
+
+import java.sql.SQLException;
 
 /**
  * Created by mdl94 on 12/10/2015.
  */
 public class IntegrationTester {
 
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
         Manager manager = new Manager();
 
@@ -36,14 +34,23 @@ public class IntegrationTester {
             return;
         }
 
+        try
+        {
+            DBAdaptor.initialise();
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
 
         // Add the subscribers
-        manager.subscribe(new HazardUpdateSubscriber(s));
-        manager.subscribe(new IncidentUpdateSubscriber(s));
+        manager.subscribe(new HazardUpdateComponent(s));
+        manager.subscribe(new IncidentUpdateComponent(s));
         manager.subscribe(new SocialMediaSubscriber());
 
         Publisher con = new APIComponent(s, manager);
-//      TimedPublisher tp = new TimedPublisher(manager, 500);
 
         s.start();
         System.out.println("ChatServer started on port: " + s.getPort());
@@ -77,7 +84,9 @@ public class IntegrationTester {
 
         // Start things up! By using the server.join() the server thread will join with the current thread.
         // See "http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/Thread.html#join()" for more details.
-        server.start();
-        server.join();
+        //server.start();
+        //server.join();
+
+        System.err.println("SERVER NOT STARTED!!!!!!");
     }
 }

@@ -1,22 +1,18 @@
 package com.seveneleven;
 
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class DBAdaptor {
 
     private static Connection db_conn;
 
-    public static void main(String[] args) {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            db_conn = DriverManager.getConnection("jdbc:mysql://localhost/cms", "root", "");
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+    public static void initialise() throws ClassNotFoundException, SQLException
+    {
+
+        Class.forName("com.mysql.jdbc.Driver");
+        db_conn = DriverManager.getConnection("jdbc:mysql://localhost/test", "root", "mdl941027");
+
     }
 
     public static boolean authenticate(String username, String password) {

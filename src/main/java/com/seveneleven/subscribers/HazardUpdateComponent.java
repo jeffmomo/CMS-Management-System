@@ -9,11 +9,11 @@ import org.json.JSONObject;
 /**
  * Created by mdl94 on 22/10/2015.
  */
-public class HazardUpdateSubscriber implements ISubscriber
+public class HazardUpdateComponent implements ISubscriber
 {
     private IAPIServer server;
 
-    public HazardUpdateSubscriber(IAPIServer server)
+    public HazardUpdateComponent(IAPIServer server)
     {
         this.server = server;
     }

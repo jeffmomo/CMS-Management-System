@@ -2,8 +2,6 @@ package com.seveneleven;
 
 import com.seveneleven.publishers.Publisher;
 import com.seveneleven.servers.APIServer;
-import com.seveneleven.subscribers.HazardUpdateSubscriber;
-import com.seveneleven.subscribers.IncidentUpdateSubscriber;
 import org.json.JSONObject;
 
 /**
@@ -33,7 +31,7 @@ public class APIComponent extends Publisher
         {
             JSONObject data = new JSONObject();
             data.put("apiType", "client_all_hazards");
-            data.put("allIncidents", manager.getAllHazards());
+            data.put("allHazards", manager.getAllHazards());
 
             server.sendTargeted(socketId, data.toString());
         });
