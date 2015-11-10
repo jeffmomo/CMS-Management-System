@@ -1,12 +1,13 @@
 package com.seveneleven.subscribers;
 
+import com.seveneleven.publishers.Publisher;
 import junit.framework.TestCase;
 
 
 public class SocialMediaSubscriberTest extends TestCase {
   public void testGetSubscription() {
     SocialMediaSubscriber subscriber = new SocialMediaSubscriber();
-    assertEquals(SocialMediaSubscriber.SOCIAL_MEDIA_SUBSCRIBER, subscriber.getSubscription());
+    assertEquals(Publisher.ADDED_NEW_HAZARD, subscriber.getSubscription());
   }
 
   public void testOnDataNullString() {

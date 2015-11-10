@@ -84,9 +84,14 @@ public class Integrater {
 
         // Start things up! By using the server.join() the server thread will join with the current thread.
         // See "http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/Thread.html#join()" for more details.
-        //server.start();
-        //server.join();
+        try {
+            server.start();
+            server.join();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
-        System.err.println("SERVER NOT STARTED!!!!!!");
+        //System.err.println("SERVER NOT STARTED!!!!!!");
     }
 }
