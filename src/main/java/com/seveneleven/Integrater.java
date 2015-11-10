@@ -15,7 +15,7 @@ import java.sql.SQLException;
 /**
  * Created by mdl94 on 12/10/2015.
  */
-public class IntegrationTester {
+public class Integrater {
 
     public static void main(String[] args)
     {
