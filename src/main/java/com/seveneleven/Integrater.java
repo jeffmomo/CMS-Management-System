@@ -46,9 +46,11 @@ public class Integrater {
         }
 
         // Add the subscribers
-        manager.subscribe(new HazardUpdateComponent(s));
-        manager.subscribe(new IncidentUpdateComponent(s));
+        manager.subscribe(new NewHazardComponent(s));
+        manager.subscribe(new NewIncidentComponent(s));
         manager.subscribe(new SocialMediaSubscriber());
+        manager.subscribe(new UpdateHazardSubscriber(s));
+        manager.subscribe(new UpdateIncidentSubscriber(s));
 
         Publisher con = new APIComponent(s, manager);
 

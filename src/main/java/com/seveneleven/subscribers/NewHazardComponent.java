@@ -9,11 +9,11 @@ import org.json.JSONObject;
 /**
  * Created by mdl94 on 22/10/2015.
  */
-public class HazardUpdateComponent implements ISubscriber
+public class NewHazardComponent implements ISubscriber
 {
     private IAPIServer server;
 
-    public HazardUpdateComponent(IAPIServer server)
+    public NewHazardComponent(IAPIServer server)
     {
         this.server = server;
     }
@@ -27,11 +27,12 @@ public class HazardUpdateComponent implements ISubscriber
     public void onData(Object data) {
 
         JSONObject jo = new JSONObject((String) data);
-        DBAdaptor.addHazard((String)jo.get("description"), (String)jo.get("location"), (String)jo.get("status"));
+        int id = DBAdaptor.addHazard((String)jo.get("description"), (String)jo.get("location"), (String)jo.get("status"));
+        jo.put("hash", id);
 
         try
         {
-            server.broadcast("client_create_zone", (String) data);
+            server.broadcast("client_create_zone", jo.toString());
         }
         catch(Exception e)
         {e.printStackTrace();}

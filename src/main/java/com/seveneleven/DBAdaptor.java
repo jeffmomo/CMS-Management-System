@@ -189,29 +189,47 @@ public class DBAdaptor {
         }
     }
 
-    public static boolean addHazard(String description, String location, String status) {
+    public static int addHazard(String description, String location, String status) {
         try {
             String insert = "'" + description + "','" + location + "','" + status + "')";
             String query = "INSERT INTO hazards (description, location, status) VALUES (" + insert;
             Statement stmt = db_conn.createStatement();
             stmt.executeUpdate(query);
-            return true;
+
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return (int)(generatedKeys.getLong(1));
+                }
+                else {
+                    throw new SQLException("Creating hazard failed, no ID obtained.");
+                }
+            }
         } catch (Exception e) {
             System.out.println(e);
-            return false;
+            return -1;
         }
     }
 
-    public static boolean addIncident(String description, String location, String status) {
+    public static int addIncident(String description, String location, String status) {
         try {
             String insert = "'" + description + "','" + location + "','" + status + "')";
             String query = "INSERT INTO incidents (description, location, status) VALUES (" + insert;
             Statement stmt = db_conn.createStatement();
             stmt.executeUpdate(query);
-            return true;
+
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return (int)(generatedKeys.getLong(1));
+                }
+                else {
+                    throw new SQLException("Creating incident failed, no ID obtained.");
+                }
+            }
         } catch (Exception e) {
             System.out.println(e);
-            return false;
+            return -1;
         }
     }
 

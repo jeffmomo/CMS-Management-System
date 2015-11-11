@@ -10,6 +10,8 @@ public class Publisher
     // Constants for the strings indicating publications
     public static final String ADDED_NEW_INCIDENT = "add_incident";
     public static final String ADDED_NEW_HAZARD = "add_hazard";
+    public static final String UPDATED_INCIDENT = "update_incident";
+    public static final String UPDATED_HAZARD = "update_hazard";
     public static final String TEST_ECHO = "echo";
     public static final String DEFAULT = "default";
 

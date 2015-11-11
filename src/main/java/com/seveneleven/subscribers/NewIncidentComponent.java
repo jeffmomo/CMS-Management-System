@@ -12,11 +12,11 @@ import org.json.JSONObject;
 /**
  * Created by mdl94 on 22/10/2015.
  */
-public class IncidentUpdateComponent implements ISubscriber
+public class NewIncidentComponent implements ISubscriber
 {
     private IAPIServer server;
 
-    public IncidentUpdateComponent(IAPIServer server)
+    public NewIncidentComponent(IAPIServer server)
     {
         this.server = server;
     }
@@ -31,17 +31,18 @@ public class IncidentUpdateComponent implements ISubscriber
     {
         // Parses the data, and adds it to database
         JSONObject jo = new JSONObject((String) data);
-        DBAdaptor.addIncident((String) jo.get("description"), (String) jo.get("location"), (String) jo.get("status"));
+        int id = DBAdaptor.addIncident((String) jo.get("description"), (String) jo.get("location"), (String) jo.get("status"));
+        jo.put("hash", id);
 
         // Sends SMS to all relevant agencies
-        CSMS c = new CSMS("+6584977893", "New Hazard: " + jo.get("description") + " ### Status: " + jo.get("status"));
+        CSMS c = new CSMS("+6581117649", "New Hazard: " + jo.get("description") + " ### Status: " + jo.get("status"));
         final SMSSenderInterface SMSSender = SMSFactory.getSMSSender();
         SMSSender.sendSMS(c);
 
         try
         {
             // Broadcasts it to web via APIManager
-            server.broadcast("client_create_marker", (String) data);
+            server.broadcast("client_create_marker", jo.toString());
         }
         catch(Exception e)
         {e.printStackTrace();}

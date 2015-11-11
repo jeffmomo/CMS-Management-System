@@ -36,6 +36,16 @@ public class APIComponent extends Publisher
             server.sendTargeted(socketId, data.toString());
         });
 
+        server.registerAction("srv_update_hazard", (msg) ->
+        {
+            publish(Publisher.UPDATED_HAZARD, msg);
+        });
+        server.registerAction("srv_update_incident", (msg) ->
+        {
+            publish(Publisher.UPDATED_INCIDENT, msg);
+        });
+
+
         // Registers the action to publish new hazard, when messages with the tag "srv_add_hazard" is received
         server.registerAction("srv_add_hazard", (msg) ->
         {

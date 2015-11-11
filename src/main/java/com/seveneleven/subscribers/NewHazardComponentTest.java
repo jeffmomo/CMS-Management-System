@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /**
  * Created by mdl94 on 4/11/2015.
  */
-public class HazardUpdateSubscriberTest extends TestCase {
+public class NewHazardComponentTest extends TestCase {
 
     DummyAPIServer dummyServer;
 
@@ -40,12 +40,12 @@ public class HazardUpdateSubscriberTest extends TestCase {
     }
 
     public void testGetSubscription() throws Exception {
-        HazardUpdateComponent underTest = new HazardUpdateComponent(dummyServer);
+        NewHazardComponent underTest = new NewHazardComponent(dummyServer);
         assertEquals(underTest.getSubscription(), Publisher.ADDED_NEW_HAZARD);
     }
 
     public void testOnData() throws Exception {
-        HazardUpdateComponent underTest = new HazardUpdateComponent(dummyServer);
+        NewHazardComponent underTest = new NewHazardComponent(dummyServer);
         underTest.onData("abc");
 
         assertEquals(dummyServer.tagString, Publisher.ADDED_NEW_HAZARD);

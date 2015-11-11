@@ -2,12 +2,16 @@
 ## From client to server ##
 srv_add_hazard -> {description: String, location: String, datetime: String, status: String} // String representation of JSON object containing info regarding hazard
 srv_add_incident -> {description: String, location: String, datetime: String, status: String} // String representation of JSON object containing info regarding incident
+srv_update_hazard -> {id: Integer}
+srv_update_incident -> {id: Integer}
 srv_getall_incidents -> socketId: String // Just a string indicating socket ID
 srv_getall_hazards -> socketId: String // Just a string indicating the socket ID
 
 ## From server to client ##
 client_create_zone -> {description: String, location: String, datetime: String, status: String} // String representation of JSON object containing info of new hazard
 client_create_marker -> {description: String, location: String, datetime: String, status: String} // String representation of JSON object containing info of new incident
+client_update_zone -> {id: Integer}
+client_update_marker -> {id: Integer}
 
 ## From server to directly targeted client ##
 {apiType: "client_all_incidents", allIncidents: String[][]} // Sends the client all data regarding all active incidents.
